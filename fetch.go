@@ -30,11 +30,81 @@ type Series struct {
 	} `json:"results"`
 }
 
+type Details struct {
+	BackdropPath string `json:"backdrop_path"`
+	CreatedBy    []struct {
+		ID          int    `json:"id"`
+		CreditID    string `json:"credit_id"`
+		Name        string `json:"name"`
+		Gender      int    `json:"gender"`
+		ProfilePath string `json:"profile_path"`
+	} `json:"created_by"`
+	EpisodeRunTime []int  `json:"episode_run_time"`
+	FirstAirDate   string `json:"first_air_date"`
+	Genres         []struct {
+		ID   int    `json:"id"`
+		Name string `json:"name"`
+	} `json:"genres"`
+	Homepage         string   `json:"homepage"`
+	ID               int      `json:"id"`
+	InProduction     bool     `json:"in_production"`
+	Languages        []string `json:"languages"`
+	LastAirDate      string   `json:"last_air_date"`
+	LastEpisodeToAir struct {
+		AirDate        string  `json:"air_date"`
+		EpisodeNumber  int     `json:"episode_number"`
+		ID             int     `json:"id"`
+		Name           string  `json:"name"`
+		Overview       string  `json:"overview"`
+		ProductionCode string  `json:"production_code"`
+		SeasonNumber   int     `json:"season_number"`
+		ShowID         int     `json:"show_id"`
+		StillPath      string  `json:"still_path"`
+		VoteAverage    float64 `json:"vote_average"`
+		VoteCount      int     `json:"vote_count"`
+	} `json:"last_episode_to_air"`
+	Name             string      `json:"name"`
+	NextEpisodeToAir interface{} `json:"next_episode_to_air"`
+	Networks         []struct {
+		Name          string `json:"name"`
+		ID            int    `json:"id"`
+		LogoPath      string `json:"logo_path"`
+		OriginCountry string `json:"origin_country"`
+	} `json:"networks"`
+	NumberOfEpisodes    int      `json:"number_of_episodes"`
+	NumberOfSeasons     int      `json:"number_of_seasons"`
+	OriginCountry       []string `json:"origin_country"`
+	OriginalLanguage    string   `json:"original_language"`
+	OriginalName        string   `json:"original_name"`
+	Overview            string   `json:"overview"`
+	Popularity          float64  `json:"popularity"`
+	PosterPath          string   `json:"poster_path"`
+	ProductionCompanies []struct {
+		ID            int    `json:"id"`
+		LogoPath      string `json:"logo_path"`
+		Name          string `json:"name"`
+		OriginCountry string `json:"origin_country"`
+	} `json:"production_companies"`
+	Seasons []struct {
+		AirDate      string `json:"air_date"`
+		EpisodeCount int    `json:"episode_count"`
+		ID           int    `json:"id"`
+		Name         string `json:"name"`
+		Overview     string `json:"overview"`
+		PosterPath   string `json:"poster_path"`
+		SeasonNumber int    `json:"season_number"`
+	} `json:"seasons"`
+	Status      string  `json:"status"`
+	Type        string  `json:"type"`
+	VoteAverage float64 `json:"vote_average"`
+	VoteCount   int     `json:"vote_count"`
+}
+
 func FetchSeriesID(name string) []byte{
 	u, err := url.Parse("https://api.themoviedb.org/3/search/tv?page=1")
 	if err != nil {
-		log.Fatal(err)
-	}
+		log.Fatal(err)			
+		}
 	q:= u.Query()
 	q.Set("api_key","85024bf9f2db24e284e8959926cd3226")
 	q.Set("language","en-US")
@@ -55,8 +125,9 @@ func FetchSeriesID(name string) []byte{
 
 	return (body)
 	
-	
-	// Output: https://google.com/search?q=golang
+}
+func FetchTotalSeasons(name string){
+
 }
 func GetID(name string) int64{
 	series := &Series{}
@@ -67,4 +138,8 @@ func GetID(name string) int64{
 	}
 	fmt.Println(series.Results[0].ID)
 	return (int64(series.Results[0].ID))
+}
+func GetSeasons(){
+	details := &Details{}
+	var JSONData = 
 }

@@ -4,4 +4,5 @@
 
 ```
 go get https://github.com/packs
+go install
 ```

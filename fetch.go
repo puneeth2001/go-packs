@@ -7,6 +7,7 @@ import (
 	"net/url"
 	"io/ioutil"
 	"log"
+	"strconv"
 	"encoding/json"
 )
 type Series struct {
@@ -126,8 +127,31 @@ func FetchSeriesID(name string) []byte{
 	return (body)
 	
 }
-func FetchTotalSeasons(name string){
+func FetchTotalSeasons(name string) []byte{
+	a16 := strconv.FormatInt(GetID(name),10)
+	fmt.Println(string(a16))
+	u, err := url.Parse("https://api.themoviedb.org/3/tv/"+string(a16)+"?language=en-US&api_key=jhyjh")
+	if err != nil {
+		log.Fatal(err)			
+		}
+	q:= u.Query()
+	q.Set("api_key","85024bf9f2db24e284e8959926cd3226")
+	q.Set("language","en-US")
+	
+	u.RawQuery = q.Encode()
+	stringURL := u.String()
+	url := stringURL
+	
+	payload := strings.NewReader("{}")
 
+	req, _ := http.NewRequest("GET", url, payload)
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	return (body)
 }
 func GetID(name string) int64{
 	series := &Series{}
@@ -139,7 +163,14 @@ func GetID(name string) int64{
 	fmt.Println(series.Results[0].ID)
 	return (int64(series.Results[0].ID))
 }
-func GetSeasons(){
+func GetSeasons(name string) int64 {
 	details := &Details{}
-	var JSONData = 
+	var byteData = FetchTotalSeasons(name)
+	err := json.Unmarshal(byteData, details)
+	if err != nil {
+		fmt.Print(err)
+	}
+	fmt.Println(details.NumberOfSeasons)
+	return (int64(details.NumberOfSeasons))
 }
+
